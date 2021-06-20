@@ -13,7 +13,7 @@ var DOMAIN = process.env.MAILGUN_DOMAIN;
 var mailgun = require("mailgun-js")({ apiKey: API_KEY, domain: DOMAIN });
 
 app.get("/", (req, res) => {
-  res.json({ message: "it's ok" });
+  res.json({ message: "test" });
 });
 
 app.post("/form", async (req, res) => {
@@ -25,7 +25,6 @@ app.post("/form", async (req, res) => {
   };
   if (req.fields.firstname && req.fields.lastname && req.fields.email && req.fields.message) {
     mailgun.messages().send(data, (error, body) => {
-      // console.log(body);
       if (!error) {
         res.status(200).json({ message: "formulaire reçu" });
       } else {
@@ -41,6 +40,6 @@ app.all("*", (req, res) => {
   res.status(400).json({ message: "Page not found" });
 });
 
-app.listen("3000", () => {
-  console.log("Server started");
+app.listen(process.env.PORT, () => {
+  console.log(`Server started on port ${process.env.PORT}`);
 });
